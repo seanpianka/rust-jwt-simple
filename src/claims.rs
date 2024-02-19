@@ -172,7 +172,10 @@ pub struct JWTClaims<CustomClaims> {
 }
 
 impl<CustomClaims> JWTClaims<CustomClaims> {
+    #[tracing::instrument(skip(self))]
     pub(crate) fn validate(&self, options: &VerificationOptions) -> Result<(), Error> {
+        tracing::debug!("{:?}", self.issued_at);
+
         let now = options
             .artificial_time
             .unwrap_or_else(Clock::now_since_epoch);
